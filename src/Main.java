@@ -18,7 +18,17 @@ public class Main {
 
             System.out.println("\n------> matriz");
             ArrayMatriz am = new ArrayMatriz(archivoNumeros);
+            am.eliminarEntero(0);
+            am.adicionarNumero(1,3,8);
+            am.nuevoArray(new Integer[] {1,2,3,4,5});
+            am.eliminarVacios();
             am.mostrar();
+
+            System.out.println("media: " + am.promedioArrays());
+            System.out.println("size: " + am.tamañoDeArrays());
+
+
+
 
 
         } catch (IOException e) {
