@@ -88,8 +88,7 @@ public class Partidos {
         ArrayList<Partido> goleadas = new ArrayList<>();
         while(i.hasNext()) {
             Partido p = i.next();
-            int diff = p.getGolesLocal() - p.getGolesVisitante();
-            if (diff < 0) diff *= -1;
+            int diff = Math.abs(p.getGolesLocal() - p.getGolesVisitante());
             if (diff >= 3) goleadas.add(p);
         }
         return goleadas;
