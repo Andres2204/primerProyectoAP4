@@ -17,7 +17,7 @@ public class MenuArrayMatriz extends Menu{
                         "Seleccione una opción:\n1. Mostrar\n2. Remover un entero\n3. Eliminar Vacios\n4. Tamaño de cada ArrayList\n5. Promedio de cada ArrayList\n6. Adicionar un nuevo dato en un Array existente\n7. Adicionar un nuevo dato en un Array nuevo\n8. Regresar");
                 if (opt == null || opt.equals("8")) {
                     msg("Regresando...");
-                    System.exit(0);
+                    break;
                 }
                 switch (opt) {
                     case "1":

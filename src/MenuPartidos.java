@@ -17,7 +17,7 @@ public class MenuPartidos extends Menu {
                         "Seleccione una opción:\n1. Mostrar\n2. Remover empates\n3. Partidos ganados por locales\n4. Partidos ganados por visitantes\n5. Empates\n6. Goleadas\n7. Agregar Partidos\n8. Regresar");
                 if (opt == null || opt.equals("8")) {
                     msg("Regresando...");
-                    System.exit(0);
+                    break;
                 }
                 switch (opt) {
                     case "1":
