@@ -33,12 +33,14 @@ public class ArrayMatriz {
     }
 
     // ================ [ Metodos de Mostrado ] ================
-    public void mostrar() {
+    public /*void*/String mostrar() { // modificado por antolinez
         Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
+        String r = "";
         while (i.hasNext()) {
             ArrayList<Integer> linea = i.next();
-            System.out.println(linea.toString());
+            r += linea.toString()+ "\n";
         }
+        return r;
     }
 
     // ================ [ Metodos de Eliminacion ] ================
