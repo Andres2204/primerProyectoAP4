@@ -5,16 +5,21 @@ public class ArrayMatriz {
     String noFormated;
     ArrayList<ArrayList<Integer>> arrayMatriz = new ArrayList<>();
 
+    // ================ [ Metodos Constructores ] ================
     public ArrayMatriz(FileManager f) {
         this.fm = f;
         leerYCargar();
     }
 
     public void leerYCargar() {
+        // Leer archivo
         noFormated = fm.readFile();
+
+        // Separar lineas y crear Iterador
         ArrayList<String> lineas = FileManager.linesToArrayList(noFormated);
         Iterator<String> i = lineas.iterator();
 
+        // Iterar y añadir al ArrayList de ArrayList
         while (i.hasNext()) {
             String linea = i.next();
             ArrayList<Integer> arrayNumeros = new ArrayList<>();
@@ -27,22 +32,22 @@ public class ArrayMatriz {
         }
     }
 
-    // <= Methods =>
-
-    // mostrar
+    // ================ [ Metodos de Mostrado ] ================
     public void mostrar() {
         Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
         while (i.hasNext()) {
             ArrayList<Integer> linea = i.next();
             System.out.println(linea.toString());
         }
-
     }
 
+    // ================ [ Metodos de Eliminacion ] ================
     // 2- Eliminar un entero dado
     public void eliminarEntero(int n) {
+        // Crear Iterador
         Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
 
+        // Iterar dos veces, filtrando sobre el ArrayList interno para remover
         while (i.hasNext()) {
             ArrayList<Integer> arrayInt = i.next();
             Iterator<Integer> j = arrayInt.iterator();
@@ -51,24 +56,30 @@ public class ArrayMatriz {
                 if (num == n) j.remove();
             }
             // if (arrayInt.isEmpty()) i.remove(); // para remover el array si queda esta vacio
-
         }
     }
 
     // Eliminar vacios
     public void eliminarVacios() {
+        // Crear Iterador
         Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
+
+        // Iterar, filtrar y remover vacios del ArrayList primario
         while (i.hasNext()) {
             ArrayList<Integer> arrayInt = i.next();
             if (arrayInt.isEmpty()) i.remove(); // para remover el array si queda esta vacio
-
         }
     }
 
+
+    // ================ [ Metodos de calculo ] ================
     // 5- Calcular tamaño de cada arrayList
     public ArrayList<Integer> tamañoDeArrays() {
+        // Crear Iterador y ArrayList de retorno
         ArrayList<Integer> output = new ArrayList<Integer>();
         Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
+
+        // Iterar y adicionar el tamaño del ArraList interno al ArrayList de retorno
         while (i.hasNext()) {
             ArrayList<Integer> arrayInt = i.next();
             output.add(arrayInt.size());
@@ -76,6 +87,29 @@ public class ArrayMatriz {
         return output;
     }
 
+    // 1- Realizar la suma y el promedio de cada fila (ArrayList)
+    public ArrayList<Float> promedioArrays() {
+        // Crear Iterador y ArrayList de retorno
+        ArrayList<Float> output = new ArrayList<>();
+        Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
+
+        // Iterar en el ArrayList externo y posteriormente el interno, sumando sus elementos
+        // y Adicionar al ArrayList de retorno
+        while (i.hasNext()) {
+            ArrayList<Integer> arrayInt = i.next();
+            Iterator<Integer> j = arrayInt.iterator();
+            float promedio = 0;
+            if (!arrayInt.isEmpty()) {
+                while (j.hasNext()) promedio += j.next();
+                promedio /= arrayInt.size(); // Reutilizar el la variable de promedio, para dividir entre el tamaño
+            }
+            output.add(promedio);
+        }
+        return output;
+    }
+
+
+    // ================ [ Metodos de Adicion ] ================
     // 6- Adicionar Datos [m,n]
     public void adicionarNumero(int arrayInt, int e) throws Exception{
         adicionarNumero(arrayInt, e, -1);
@@ -98,25 +132,4 @@ public class ArrayMatriz {
         ArrayList<Integer> newArray = new ArrayList<Integer>(Arrays.<Integer>asList(datos));
         arrayMatriz.add(newArray);
     }
-
-    // 1- Realizar la suma y el promedio de cada fila (ArrayList)
-    public ArrayList<Float> promedioArrays() {
-        ArrayList<Float> output = new ArrayList<>();
-        Iterator<ArrayList<Integer>> i = arrayMatriz.iterator();
-        while (i.hasNext()) {
-            ArrayList<Integer> arrayInt = i.next();
-            Iterator<Integer> j = arrayInt.iterator();
-            float promedio = 0;
-            if (!arrayInt.isEmpty()) {
-                while (j.hasNext()) {
-                    promedio += j.next();
-                }
-                promedio /= arrayInt.size();
-            }
-            output.add(promedio);
-        }
-        return output;
-    }
-
-
 }

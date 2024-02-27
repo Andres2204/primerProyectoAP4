@@ -6,13 +6,19 @@ import java.util.Scanner;
 
 public class FileManager {
     File f;
+
+    // ================ [ Metodos Constructores ] ================
+
     public FileManager(String path) throws IOException {
         f = new File(path);
     }
+
+    // ================ [ Metodos para leer ] ================
+
     public String readFile() {
         Scanner s = null;
         String output = "";
-        try {
+        try { // intenar leer archivo
             s = new Scanner(f);
             while (s.hasNextLine()) {
                 String linea = s.nextLine();
@@ -22,7 +28,7 @@ public class FileManager {
         } catch (Exception e) {
             e.printStackTrace();
 
-        } finally {
+        } finally { // intentar cerrar el scanner
             try {
                 if (s != null) s.close();
             } catch (Exception e2) {
@@ -32,24 +38,16 @@ public class FileManager {
         return output;
     }
 
-    public static ArrayList<String> linesToArrayList(String noFormated) {
-        String[] lineas = noFormated.split("-");
-        ArrayList<String> output = new ArrayList<>();
-        for (String l : lineas) {
-            output.add(l);
-        }
-        return output;
-    }
-
+    // ================ [ Metodos de adicion ] ================
     public void adicionarLinea(String linea) {
         FileWriter fw = null;
-        try {
+        try { // intentar escribir en el archivo
             fw = new FileWriter(f.getAbsoluteFile(), true);
             fw.write(linea);
         } catch (IOException e) {
-            System.out.println("E");
+            System.out.println("Excepcion.");
             e.printStackTrace();
-        } finally {
+        } finally { // intentar cerrar el fileWriter
             try {
                 if (fw != null) fw.close();
                 System.out.println("pass");
@@ -59,4 +57,17 @@ public class FileManager {
             }
         }
     }
+
+    // ================ [ Metodos de utilidad ] ================
+    public static ArrayList<String> linesToArrayList(String noFormated) {
+        // Separar lineas y crear ArrayList de retorno
+        String[] lineas = noFormated.split("-");
+        ArrayList<String> output = new ArrayList<>();
+
+        // Adicionar lineas al ArrayList de retorno
+        for (String l : lineas) output.add(l);
+        return output;
+    }
+
+
 }

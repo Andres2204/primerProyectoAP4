@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public class Partidos {
@@ -6,46 +7,51 @@ public class Partidos {
     String noFormated;
     FileManager fm;
 
-    // <= Contructor =>
+    // ================ [ Metodos Constructores ] ================
     public Partidos(FileManager f) {
         this.fm = f;
         leerYCargar();
     }
 
-    public void leerYCargar() {
-        noFormated = fm.readFile();
-        if (noFormated == null || noFormated == "") return;
 
+    public void leerYCargar() {
+        // obtener archivo origuinal
+        noFormated = fm.readFile();
+        if (noFormated == null || noFormated.equals("")) return;
+
+        // partir lineas
         String[] splitedLines = noFormated.split("-");
         partidos = new ArrayList<Partido>();
 
-        for(String sl : splitedLines) {
+        // llenar con las lineas existentes.
+        for (String sl : splitedLines) {
             String[] d = sl.split("::");
             partidos.add(new Partido(d[0], d[1], Integer.parseInt(d[2]), Integer.parseInt(d[3])));
         }
     }
 
-    // <= Methods =>
-
-    // mostrar
+    // ================ [ Metodos de mostrado ] ================
     public void mostrarPartidos() {
         Iterator<Partido> i = partidos.iterator();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             Partido partido = i.next();
             mostrarPartido(partido);
         }
     }
 
     public static void mostrarPartido(Partido partido) {
-        System.out.println("\n -> Local: " + partido.getEquipoLocal()+" - "+partido.getGolesLocal() + "\n" +
+        System.out.println("\n -> Local: " + partido.getEquipoLocal() + " - " + partido.getGolesLocal() + "\n" +
                 "Visitante: " + partido.getEquipoVisitante() + " - " + partido.getGolesVisitante());
     }
 
-    // remover
+    // ================ [ Metodos de Eliminacion ] ================
     public ArrayList<Partido> removerEmpates() {
+        // crear Iterador y ArrayList de retorno
         Iterator<Partido> i = partidos.iterator();
         ArrayList<Partido> empates = new ArrayList<>();
-        while(i.hasNext()) {
+
+        // Iterar, Verificar y remover retornando el ArrayList de los eliminados
+        while (i.hasNext()) {
             Partido p = i.next();
             if (p.getGolesLocal() == p.getGolesVisitante()) {
                 i.remove();
@@ -55,12 +61,17 @@ public class Partidos {
         return empates;
     }
 
-    // filtrar
+    // ================ [ Metodos de Filtrado ] ================
     public ArrayList<Partido> localGanador(Boolean local) {
+        // crear iteradores y ArrayList de retorno
         Iterator<Partido> i = partidos.iterator();
         ArrayList<Partido> partidosGanados = new ArrayList<>();
-        while(i.hasNext()) {
+
+        // Iterar, verificar y añadir al ArrayList de retorno
+        while (i.hasNext()) {
             Partido p = i.next();
+
+            // Dependiendo de la flag, va a añadir al ArrayList de retorno los locales o visitantes
             if (local && p.getGolesLocal() > p.getGolesVisitante()) {
                 partidosGanados.add(p); // añadir si los locales ganan
             } else if (!local && p.getGolesLocal() < p.getGolesVisitante()) {
@@ -72,9 +83,12 @@ public class Partidos {
 
     // [POSIBLE MEJORA] Este metodo se puede condensar con el de remover empates con una flag y sobrecarga
     public ArrayList<Partido> empates() {
+        // crear iteradores y ArrayList de retorno
         Iterator<Partido> i = partidos.iterator();
         ArrayList<Partido> empates = new ArrayList<>();
-        while(i.hasNext()) {
+
+        // Iterar, verificar y añadir al ArrayList de retorno
+        while (i.hasNext()) {
             Partido p = i.next();
             if (p.getGolesLocal() == p.getGolesVisitante())
                 empates.add(p); // añadir empatados
@@ -84,9 +98,12 @@ public class Partidos {
     }
 
     public ArrayList<Partido> goleadas() {
+        // crear iteradores y ArrayList de retorno
         Iterator<Partido> i = partidos.iterator();
         ArrayList<Partido> goleadas = new ArrayList<>();
-        while(i.hasNext()) {
+
+        // Iterar, verificar y añadir al ArrayList de retorno
+        while (i.hasNext()) {
             Partido p = i.next();
             int diff = Math.abs(p.getGolesLocal() - p.getGolesVisitante());
             if (diff >= 3) goleadas.add(p);
@@ -94,22 +111,37 @@ public class Partidos {
         return goleadas;
     }
 
-    // adicionar
-    public void adicionarPartido(Partido p) throws Exception {
+    // ================ [ Metodos de Adicion ] ================
+    public void adicionarPartido(Partido p) throws Exception { // sobrecarga de metodos
         adicionarPartido(p.getEquipoLocal(), p.getEquipoVisitante(), p.getGolesLocal(), p.getGolesVisitante());
     }
+
     public void adicionarPartido(String nombreLocal, String nombreVisitante, int golesLocal, int golesVisitante) throws Exception {
-        //  - validaciones y formateos-
+        String lineaFormateada = nombreLocal + "::" + nombreVisitante + "::" + golesLocal + "::" + golesVisitante;
+
         if (golesLocal > 0) throw new Exception("Goles locales invalidos");
         if (golesVisitante > 0) throw new Exception("Goles visitantes invalidos");
         nombreLocal = nombreLocal.trim();
         nombreVisitante = nombreVisitante.trim();
 
-        // - adicionar -
-        String lineaFormateada = nombreLocal+"::"+nombreVisitante+"::"+golesLocal+"::"+golesVisitante;
-        partidos.add(new Partido(nombreLocal,nombreVisitante,golesLocal,golesVisitante));
-        fm.adicionarLinea(lineaFormateada);
+        // verificar existencia y adicionar
+        if (existeEnArchivo(lineaFormateada)) {
+            partidos.add(new Partido(nombreLocal, nombreVisitante, golesLocal, golesVisitante));
+            fm.adicionarLinea(lineaFormateada);
+
+            // cargar nuevamente
+            leerYCargar();
+        }
     }
 
+    public boolean existeEnArchivo(String lineaFormateada) {
+        // obtener el archivo actual
+        noFormated = fm.readFile();
+        if (noFormated == null || noFormated.equals("")) return false;
 
+        // verificar la existencia
+        String[] splitedLines = noFormated.split("-");
+        if (Arrays.stream(splitedLines).toList().contains(lineaFormateada)) return true;
+        return false;
+    }
 }

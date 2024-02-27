@@ -1,5 +1,3 @@
-package logica.arraylist_simples;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -25,7 +23,7 @@ public class ArrayListSimple {
 
     // 2-Adicionar nuevo elemento en posicion n
     public void Adicionar(String Nelemento,int posicion){
-        arraylist.add(posicion,Nelemento);        
+        arraylist.add(posicion,Nelemento);
     }
 
     // 3-Listar el arraylist

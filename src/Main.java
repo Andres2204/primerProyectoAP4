@@ -8,6 +8,10 @@ public class Main {
             FileManager archivoPartidos = new FileManager("C:\\Users\\Andre\\IdeaProjects\\primerProyectoAP4\\partidos.txt");
             FileManager archivoNumeros = new FileManager("C:\\Users\\Andre\\IdeaProjects\\primerProyectoAP4\\numeros.txt");
 
+            Partidos p = new Partidos(archivoPartidos);
+            p.existeEnArchivo("Betis::Osasuna::1::0");
+
+
             MenuPrincipal menuPrincipal = new MenuPrincipal("Menu Principal");
             menuPrincipal.menu();
 

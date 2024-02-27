@@ -4,6 +4,7 @@ public class Partido {
     private int golesLocal;
     private int golesVisitante;
 
+    // Metodos Constructores
     public Partido(String equipoLocal, String equipoVisitante, int golesLocal, int golesVisitante) {
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
