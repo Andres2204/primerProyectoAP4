@@ -31,12 +31,16 @@ public class Partidos {
     }
 
     // ================ [ Metodos de mostrado ] ================
-    public void mostrarPartidos() {
+    public String mostrarPartidos() { // modificado por antolinez
         Iterator<Partido> i = partidos.iterator();
+        String r = "";
         while (i.hasNext()) {
             Partido partido = i.next();
-            mostrarPartido(partido);
+            // mostrarPartido(partido);
+            r += " -> Local: " + partido.getEquipoLocal() + " - " + partido.getGolesLocal() + "\n" +
+            "Visitante: " + partido.getEquipoVisitante() + " - " + partido.getGolesVisitante() + "\n";
         }
+        return r;
     }
 
     public static void mostrarPartido(Partido partido) {
@@ -44,8 +48,20 @@ public class Partidos {
                 "Visitante: " + partido.getEquipoVisitante() + " - " + partido.getGolesVisitante());
     }
 
+    public String mostrarPartidos(ArrayList<Partido> array) { // Sobrecarga de metodos
+        Iterator<Partido> i = array.iterator();
+        String r = "";
+        while (i.hasNext()) {
+            Partido partido = i.next();
+            // mostrarPartido(partido);
+            r += " -> Local: " + partido.getEquipoLocal() + " - " + partido.getGolesLocal() + "\n" +
+            "Visitante: " + partido.getEquipoVisitante() + " - " + partido.getGolesVisitante() + "\n";
+        }
+        return r;
+    }
+
     // ================ [ Metodos de Eliminacion ] ================
-    public ArrayList<Partido> removerEmpates() {
+    public /*ArrayList<Partido>*/ void removerEmpates() { // modificado por antolinez
         // crear Iterador y ArrayList de retorno
         Iterator<Partido> i = partidos.iterator();
         ArrayList<Partido> empates = new ArrayList<>();
@@ -58,7 +74,8 @@ public class Partidos {
                 empates.add(p);
             }
         }
-        return empates;
+        //return empates;
+        partidos = empates;
     }
 
     // ================ [ Metodos de Filtrado ] ================
